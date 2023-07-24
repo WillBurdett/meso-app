@@ -6,15 +6,14 @@ import com.will.hypertrophyadviceservice.enums.WeightUnit;
 import com.will.hypertrophyadviceservice.exceptions.ExerciseInfoNotFoundException;
 import com.will.hypertrophyadviceservice.exceptions.InvalidWeeklyVolumeException;
 import com.will.hypertrophyadviceservice.exceptions.RepRangeInvalidException;
-import com.will.hypertrophyadviceservice.models.BodyPart;
+import com.will.hypertrophyadviceservice.feign.ExerciseDataCalls;
+import com.will.hypertrophyadviceservice.models.BodyPartInfo;
 import com.will.hypertrophyadviceservice.models.Exercise;
 import com.will.hypertrophyadviceservice.models.ExerciseInfo;
 import com.will.hypertrophyadviceservice.models.RecommendedWeek;
 import com.will.hypertrophyadviceservice.models.Week;
 import com.will.hypertrophyadviceservice.models.Weight;
 import com.will.hypertrophyadviceservice.models.Workout;
-import com.will.hypertrophyadviceservice.repositories.BodyPartRepo;
-import com.will.hypertrophyadviceservice.repositories.ExerciseInfoRepo;
 import com.will.hypertrophyadviceservice.enums.MinOrMax;
 import com.will.hypertrophyadviceservice.exceptions.BodyPartNotFoundException;
 import java.util.ArrayList;
@@ -27,18 +26,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class MPService {
 
-  private final ExerciseInfoRepo exerciseInfoRepo;
-
-  private final BodyPartRepo bodyPartRepo;
-
   @Autowired
-  public MPService(ExerciseInfoRepo exerciseInfoRepo, BodyPartRepo bodyPartRepo) {
-    this.exerciseInfoRepo = exerciseInfoRepo;
-    this.bodyPartRepo = bodyPartRepo;
+  private final ExerciseDataCalls exerciseDataCalls;
+
+  public MPService(ExerciseDataCalls exerciseDataCalls) {
+    this.exerciseDataCalls = exerciseDataCalls;
   }
 
   public List<ExerciseInfo> getAllExerciseInfo(){
-    return exerciseInfoRepo.findAll();
+    return exerciseDataCalls.getAllExerciseInfo();
   }
 
   public RecommendedWeek makeWeekHarder(Week week) {
@@ -61,7 +57,7 @@ public class MPService {
     HashMap<BodyPartName, Integer> weeklyVolume = countWeeklyVolume(week);
 
     for (BodyPartName bpName: weeklyVolume.keySet()) {
-      BodyPart bpInfo = getBodyPartInfo(bpName);
+      BodyPartInfo bpInfo = getBodyPartInfo(bpName);
 
       /**
        * Currently suggestions to increase volume for a particular body part are prompted when a user is both:
@@ -114,18 +110,19 @@ public class MPService {
   }
 
   public ExerciseInfo getExerciseInfo(String exerciseName){
-    Optional<ExerciseInfo> e = exerciseInfoRepo.findById(ExerciseName.valueOf(exerciseName));
-    if (e.isPresent()){
-      return e.get();
+    ExerciseInfo e = exerciseDataCalls.getExerciseInfo(exerciseName);
+    if (e != null){
+      return e;
     }
     throw new ExerciseInfoNotFoundException("no exercise found called: " + exerciseName);
   }
 
-  public BodyPart getBodyPartInfo(BodyPartName bpName){
-    Optional<BodyPart> b = bodyPartRepo.findById(bpName);
-    if (b.isPresent()){
-      return b.get();
+  public BodyPartInfo getBodyPartInfo(BodyPartName bpName){
+    BodyPartInfo b = exerciseDataCalls.getBodyPartInfo(bpName.toString());
+    if (b != null) {
+      return b;
     }
+
     throw new BodyPartNotFoundException("no body part found called: " + bpName);
   }
 
@@ -174,7 +171,7 @@ public class MPService {
     HashMap<BodyPartName, Integer> weeklyVolume = countWeeklyVolume(week);
 
     for (BodyPartName bpName: weeklyVolume.keySet()) {
-      BodyPart bpInfo = getBodyPartInfo(bpName);
+      BodyPartInfo bpInfo = getBodyPartInfo(bpName);
       if (weeklyVolume.get(bpName) < bpInfo.getMinSetsPerWeek() ||
           weeklyVolume.get(bpName) > bpInfo.getMaxSetsPerWeek()){
           throw new InvalidWeeklyVolumeException(
@@ -194,7 +191,7 @@ public class MPService {
     for (Workout w: week.getAllWorkouts()) {
       for (Exercise e: w.getExercises()) {
         ExerciseInfo exerciseInfo = getExerciseInfo(e.getExerciseName());
-        BodyPartName bodyPartName = exerciseInfo.getBodyPart().getBodyPartName();
+        BodyPartName bodyPartName = exerciseInfo.getBodyPartInfo().getBodyPartName();
 
         weeklyVolume.put(bodyPartName,  weeklyVolume.get(bodyPartName) + e.getSets());
       }

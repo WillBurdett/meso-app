@@ -14,28 +14,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExerciseInfo {
 
-  @Id
-  @Column
   private ExerciseName exerciseName;
-
-  @ManyToOne(cascade = CascadeType.PERSIST)
-  @JoinColumn(name = "body_part_name", referencedColumnName = "body_part_name")
-  private BodyPart bodyPart;
-
-  @Column
+  private BodyPartInfo bodyPartInfo;
   private MovementType movementType;
-
-  @Column
   private MovementDirection movementDirection;
-
-  @Column
   private Integer minReps;
-
-  @Column
   private Integer maxReps;
 }

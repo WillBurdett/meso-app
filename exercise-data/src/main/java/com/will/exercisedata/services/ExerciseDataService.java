@@ -1,6 +1,7 @@
 package com.will.exercisedata.services;
 
 import com.will.exercisedata.enums.BodyPartName;
+import com.will.exercisedata.enums.ExerciseName;
 import com.will.exercisedata.enums.MinOrMax;
 import com.will.exercisedata.models.BodyPartInfo;
 import com.will.exercisedata.models.ExerciseInfo;
@@ -34,6 +35,7 @@ public class ExerciseDataService {
     if (bpInfo.isPresent()){
       return bpInfo.get();
     }
+    System.out.println("BODY PART NAME 404 = " + bpName);
     // TODO: 20/07/2023 throw exception
     return null;
   }
@@ -47,4 +49,13 @@ public class ExerciseDataService {
     return null;
   }
 
+  public ExerciseInfo getExerciseInfo(ExerciseName exName) {
+    Optional<ExerciseInfo> exInfo = exerciseInfoRepo.findById(exName);
+    if (exInfo.isPresent()){
+      return exInfo.get();
+    }
+    System.out.println("EXERCISE NAME 404 = " + exName);
+    // TODO: 20/07/2023 throw exception
+    return null;
+  }
 }

@@ -9,17 +9,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class BodyPart {
-  @Id
-  @Column(name = "body_part_name")
+public class BodyPartInfo {
+
   private BodyPartName bodyPartName;
-
-  @Column
   private Integer minSetsPerWeek;
-
-  @Column
   private Integer maxSetsPerWeek;
 }

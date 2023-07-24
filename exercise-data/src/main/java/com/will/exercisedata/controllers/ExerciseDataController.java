@@ -1,6 +1,7 @@
 package com.will.exercisedata.controllers;
 
 import com.will.exercisedata.enums.BodyPartName;
+import com.will.exercisedata.enums.ExerciseName;
 import com.will.exercisedata.enums.MinOrMax;
 import com.will.exercisedata.models.BodyPartInfo;
 import com.will.exercisedata.models.ExerciseInfo;
@@ -28,8 +29,13 @@ public class ExerciseDataController {
     return exerciseDataService.getAllExerciseInfo();
   }
 
-  @GetMapping(path = "/{bpName}")
-  public BodyPartInfo getBodyPartInfo(@PathVariable BodyPartName bpName){
+  @GetMapping(path = "/exercise/{exName}")
+  public ExerciseInfo getExerciseInfoById(@PathVariable ExerciseName exName){
+    return  exerciseDataService.getExerciseInfo(exName);
+  }
+
+  @GetMapping(path = "/bodypart/{bpName}")
+  public BodyPartInfo getBodyPartInfoById(@PathVariable BodyPartName bpName){
     return exerciseDataService.getBodyPartInfo(bpName);
   }
 
