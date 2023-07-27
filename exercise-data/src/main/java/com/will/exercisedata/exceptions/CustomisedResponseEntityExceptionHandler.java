@@ -1,6 +1,6 @@
-package com.will.hypertrophyadviceservice.exceptions;
+package com.will.exercisedata.exceptions;
 
-import com.will.hypertrophyadviceservice.models.ErrorDetails;
+import com.will.exercisedata.models.ErrorDetails;
 import java.time.LocalDateTime;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
