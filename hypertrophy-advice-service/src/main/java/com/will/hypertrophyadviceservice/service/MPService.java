@@ -62,10 +62,10 @@ public class MPService {
       /**
        * Currently suggestions to increase volume for a particular body part are prompted when a user is both:
        *  - At least at Week 4 of their Mesocycle
-       *  - Still training <= 3 sets of the minimum recommended weekly volume for a body part
+       *  - Still training <= 2 sets above the minimum recommended weekly volume for a body part
        **/
 
-      Integer minRepRange4WeeksIn = bpInfo.getMinSetsPerWeek() + 3;
+      Integer minRepRange4WeeksIn = bpInfo.getMinSetsPerWeek() + 2;
 
       if (weeklyVolume.get(bpName) < minRepRange4WeeksIn && week.getWeekNumber() > 3){
         if (bpName.equals(BodyPartName.ABS) && !areDirectlyTrainingAbs(weeklyVolume)){
