@@ -43,7 +43,14 @@ public class Hydration {
                   MovementType.COMPOUND,
                   MovementDirection.HORIZONTAL,
                   6,
-                  12),
+                  15),
+              new ExerciseInfo(
+                  ExerciseName.FLAT_BENCH_PRESS_DUMBBELL,
+                  CHEST,
+                  MovementType.COMPOUND,
+                  MovementDirection.HORIZONTAL,
+                  6,
+                  15),
               new ExerciseInfo(
                   ExerciseName.CHEST_DIPS,
                   CHEST,
@@ -59,7 +66,21 @@ public class Hydration {
                   8,
                   20),
               new ExerciseInfo(
-                  ExerciseName.CHEST_FLY_MACHINE,
+                  ExerciseName.MACHINE_CHEST_FLY,
+                  CHEST,
+                  MovementType.ISOLATION,
+                  MovementDirection.HORIZONTAL,
+                  8,
+                  20),
+              new ExerciseInfo(
+                  ExerciseName.CABLE_CHEST_FLY,
+                  CHEST,
+                  MovementType.ISOLATION,
+                  MovementDirection.HORIZONTAL,
+                  8,
+                  20),
+              new ExerciseInfo(
+                  ExerciseName.DUMBBELL_CHEST_FLY,
                   CHEST,
                   MovementType.ISOLATION,
                   MovementDirection.HORIZONTAL,
@@ -71,7 +92,22 @@ public class Hydration {
                   MovementType.COMPOUND,
                   MovementDirection.VERTICAL,
                   8,
-                  15),
+                  20),
+              new ExerciseInfo(
+                  ExerciseName.INCLINE_BENCH_PRESS,
+                  CHEST,
+                  MovementType.COMPOUND,
+                  MovementDirection.VERTICAL,
+                  8,
+                  20),
+              new ExerciseInfo(
+                  ExerciseName.INCLINE_SMITH_MACHINE_PRESS,
+                  CHEST,
+                  MovementType.COMPOUND,
+                  MovementDirection.VERTICAL,
+                  8,
+                  20),
+
 
               // REAR DELTS
               new ExerciseInfo(
@@ -99,6 +135,34 @@ public class Hydration {
                   20),
               new ExerciseInfo(
                   ExerciseName.SUPER_ROM_LATERAL_RAISES,
+                  LATERAL_DELTOIDS,
+                  MovementType.ISOLATION,
+                  MovementDirection.LATERAL,
+                  8,
+                  20),
+              new ExerciseInfo(
+                  ExerciseName.UPRIGHT_ROWS_DUMBBELLS,
+                  LATERAL_DELTOIDS,
+                  MovementType.ISOLATION,
+                  MovementDirection.LATERAL,
+                  8,
+                  20),
+              new ExerciseInfo(
+                  ExerciseName.UPRIGHT_ROWS_BARBELL,
+                  LATERAL_DELTOIDS,
+                  MovementType.ISOLATION,
+                  MovementDirection.LATERAL,
+                  8,
+                  20),
+              new ExerciseInfo(
+                  ExerciseName.UPRIGHT_ROWS_SMITH_MACHINE,
+                  LATERAL_DELTOIDS,
+                  MovementType.ISOLATION,
+                  MovementDirection.LATERAL,
+                  8,
+                  20),
+              new ExerciseInfo(
+                  ExerciseName.UPRIGHT_ROWS_CABLE,
                   LATERAL_DELTOIDS,
                   MovementType.ISOLATION,
                   MovementDirection.LATERAL,
