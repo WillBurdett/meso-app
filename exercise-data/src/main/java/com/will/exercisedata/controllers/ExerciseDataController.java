@@ -39,7 +39,7 @@ public class ExerciseDataController {
     return exerciseDataService.getBodyPartInfo(bpName);
   }
 
-  @GetMapping(path = "/{bpName}/{minOrMax}")
+  @GetMapping(path = "/bodypart/{bpName}/{minOrMax}")
   public Integer getMinOrMaxSetsPerWeekForBodyPart(@PathVariable BodyPartName bpName, @PathVariable MinOrMax minOrMax){
     return exerciseDataService.getMinOrMaxSetsPerWeekForBodyPart(bpName, minOrMax);
   }
