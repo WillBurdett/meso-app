@@ -1,7 +1,6 @@
 package com.will.hypertrophyadviceservice.service;
 
 import com.will.hypertrophyadviceservice.enums.BodyPartName;
-import com.will.hypertrophyadviceservice.enums.ExerciseName;
 import com.will.hypertrophyadviceservice.enums.WeightUnit;
 import com.will.hypertrophyadviceservice.exceptions.ExerciseInfoNotFoundException;
 import com.will.hypertrophyadviceservice.exceptions.InvalidWeeklyVolumeException;
@@ -19,7 +18,6 @@ import com.will.hypertrophyadviceservice.exceptions.BodyPartNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
