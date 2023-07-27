@@ -38,7 +38,7 @@ public class Hydration {
           List.of(
               // CHEST
               new ExerciseInfo(
-                  ExerciseName.BARBELL_BENCH_PRESS,
+                  ExerciseName.FLAT_BENCH_PRESS_BARBELL,
                   CHEST,
                   MovementType.COMPOUND,
                   MovementDirection.HORIZONTAL,
