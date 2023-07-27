@@ -35,17 +35,6 @@ public class ExerciseDataService {
     if (bpInfo.isPresent()){
       return bpInfo.get();
     }
-    System.out.println("BODY PART NAME 404 = " + bpName);
-    // TODO: 20/07/2023 throw exception
-    return null;
-  }
-
-  public Integer getMinOrMaxSetsPerWeekForBodyPart(BodyPartName bpName, MinOrMax minOrMax) {
-    Optional<BodyPartInfo> bpInfo = bodyPartInfoRepo.findById(bpName);
-    if (bpInfo.isPresent()){
-      return minOrMax == MinOrMax.MAX ? bpInfo.get().getMaxSetsPerWeek() : bpInfo.get().getMinSetsPerWeek();
-    }
-    // TODO: 20/07/2023 throw exception
     return null;
   }
 
@@ -54,8 +43,6 @@ public class ExerciseDataService {
     if (exInfo.isPresent()){
       return exInfo.get();
     }
-    System.out.println("EXERCISE NAME 404 = " + exName);
-    // TODO: 20/07/2023 throw exception
     return null;
   }
 }
