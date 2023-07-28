@@ -1,5 +1,6 @@
 package com.will.userservice.controllers;
 
+import com.will.userservice.models.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserServiceController {
 
   @GetMapping
-  public String hello(){
-    return "hello world";
+  public User getUserDetails(){
+    return new User("bob@gmail.com", "pass123");
   }
 }
