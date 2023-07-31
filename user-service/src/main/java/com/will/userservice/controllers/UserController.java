@@ -5,6 +5,7 @@ import com.will.userservice.services.UserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +30,10 @@ public class UserController {
   @PostMapping
   public void createUser(@RequestBody User user){
     userService.createUser(user);
+  }
+
+  @PostMapping(path = "/{email}/{mesoName}")
+  public void createMeso(@PathVariable String email, @PathVariable String mesoName){
+    userService.createMeso(email, mesoName);
   }
 }
