@@ -1,6 +1,7 @@
 package com.will.userservice.services;
 
 import com.will.userservice.models.Mesocycle;
+import com.will.userservice.models.NewMesocycleRequestBody;
 import com.will.userservice.models.User;
 import com.will.userservice.repositories.UserRepository;
 import java.util.List;
@@ -26,21 +27,20 @@ public class UserService {
     userRepository.save(user);
   }
 
-  public void createMeso(String email, String mesoName) {
-    Optional <User> optUser = userRepository.findById(email);
+  public void createMeso(NewMesocycleRequestBody newMesocycleRequestBody) {
+    Optional <User> optUser = userRepository.findById(newMesocycleRequestBody.getEmail());
 
     if (!optUser.isPresent()){
       // TODO: 31/07/2023 throw expeception
     }
 
-    List <Mesocycle> mesocycles = optUser.get().getMesocycles();
+    User user = optUser.get();
 
-    mesocycles.add(new Mesocycle(mesoName));
+    List <Mesocycle> mesocycles = user.getMesocycles();
+    mesocycles.add(new Mesocycle(newMesocycleRequestBody.getMesoName()));
 
-    optUser.get().setMesocycles(mesocycles);
-
-    userRepository.save(optUser.get());
-
+    user.setMesocycles(mesocycles);
+    userRepository.save(user);
 
   }
 }
