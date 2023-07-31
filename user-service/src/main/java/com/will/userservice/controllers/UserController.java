@@ -29,12 +29,12 @@ public class UserController {
   }
 
   @PostMapping
-  public void createUser(@RequestBody User user){
+  public void createUser(@RequestBody @Valid User user){
     userService.createUser(user);
   }
 
   @PostMapping(path = "/create-meso")
-  public void createMeso(@RequestBody NewMesocycleRequestBody newMesocycleRequestBody){
+  public void createMeso(@RequestBody @Valid NewMesocycleRequestBody newMesocycleRequestBody){
     userService.createMeso(newMesocycleRequestBody);
   }
 
