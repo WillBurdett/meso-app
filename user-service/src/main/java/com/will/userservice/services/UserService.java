@@ -49,7 +49,7 @@ public class UserService {
     return ResponseEntity.created(location).build();
   }
 
-  public void createMeso(NewMesocycleRequestBody newMesocycleRequestBody) {
+  public ResponseEntity<Mesocycle> createMeso(NewMesocycleRequestBody newMesocycleRequestBody) {
     Optional <User> optUser = userRepository.findById(newMesocycleRequestBody.getEmail());
 
     if (!optUser.isPresent()){
@@ -62,8 +62,15 @@ public class UserService {
     mesocycles.add(new Mesocycle(newMesocycleRequestBody.getMesoName()));
 
     user.setMesocycles(mesocycles);
-    userRepository.save(user);
+    User savedUser = userRepository.save(user);
 
+    URI location = ServletUriComponentsBuilder
+        .fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(savedUser.getEmail())
+        .toUri();
+
+    return ResponseEntity.created(location).build();
   }
 
 }

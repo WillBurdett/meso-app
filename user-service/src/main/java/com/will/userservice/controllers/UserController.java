@@ -1,5 +1,6 @@
 package com.will.userservice.controllers;
 
+import com.will.userservice.models.Mesocycle;
 import com.will.userservice.models.NewMesocycleRequestBody;
 import com.will.userservice.models.User;
 import com.will.userservice.services.UserService;
@@ -41,8 +42,8 @@ public class UserController {
   }
 
   @PostMapping(path = "/create-meso")
-  public void createMeso(@RequestBody @Valid NewMesocycleRequestBody newMesocycleRequestBody){
-    userService.createMeso(newMesocycleRequestBody);
+  public ResponseEntity<Mesocycle> createMeso(@RequestBody @Valid NewMesocycleRequestBody newMesocycleRequestBody){
+    return userService.createMeso(newMesocycleRequestBody);
   }
 
   @GetMapping(path = "demo")
