@@ -73,4 +73,7 @@ public class UserService {
     return ResponseEntity.created(location).build();
   }
 
+  public void deleteUserById(String id) {
+    userRepository.deleteById(id);
+  }
 }
