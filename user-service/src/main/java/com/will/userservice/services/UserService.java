@@ -1,5 +1,6 @@
 package com.will.userservice.services;
 
+import com.will.userservice.exceptions.UserNotFoundException;
 import com.will.userservice.models.Mesocycle;
 import com.will.userservice.models.NewMesocycleRequestBody;
 import com.will.userservice.models.User;
@@ -26,6 +27,16 @@ public class UserService {
     return userRepository.findAll();
   }
 
+  public User getUserById(String id) {
+    Optional <User> optUser = userRepository.findById(id);
+
+    if (!optUser.isPresent()){
+      throw new UserNotFoundException("id: " + id);
+    }
+
+    return optUser.get();
+  }
+
   public ResponseEntity<User> createUser(User user) {
     User savedUser = userRepository.save(user);
 
@@ -42,7 +53,7 @@ public class UserService {
     Optional <User> optUser = userRepository.findById(newMesocycleRequestBody.getEmail());
 
     if (!optUser.isPresent()){
-      // TODO: 31/07/2023 throw expeception
+      throw new UserNotFoundException("id: " + newMesocycleRequestBody.getEmail());
     }
 
     User user = optUser.get();
@@ -54,4 +65,5 @@ public class UserService {
     userRepository.save(user);
 
   }
+
 }
