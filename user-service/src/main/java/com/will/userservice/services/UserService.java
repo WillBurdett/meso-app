@@ -4,10 +4,13 @@ import com.will.userservice.models.Mesocycle;
 import com.will.userservice.models.NewMesocycleRequestBody;
 import com.will.userservice.models.User;
 import com.will.userservice.repositories.UserRepository;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Service
 public class UserService {
@@ -23,8 +26,16 @@ public class UserService {
     return userRepository.findAll();
   }
 
-  public void createUser(User user) {
-    userRepository.save(user);
+  public ResponseEntity<User> createUser(User user) {
+    User savedUser = userRepository.save(user);
+
+    URI location = ServletUriComponentsBuilder
+        .fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(savedUser.getEmail())
+        .toUri();
+
+    return ResponseEntity.created(location).build();
   }
 
   public void createMeso(NewMesocycleRequestBody newMesocycleRequestBody) {
