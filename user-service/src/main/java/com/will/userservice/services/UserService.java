@@ -1,8 +1,9 @@
 package com.will.userservice.services;
 
+import com.will.userservice.exceptions.MesocycleNotFoundException;
 import com.will.userservice.exceptions.UserNotFoundException;
 import com.will.userservice.models.Mesocycle;
-import com.will.userservice.models.NewMesocycleRequestBody;
+import com.will.userservice.models.MesocycleCreationDeletion;
 import com.will.userservice.models.User;
 import com.will.userservice.repositories.UserRepository;
 import java.net.URI;
@@ -49,17 +50,17 @@ public class UserService {
     return ResponseEntity.created(location).build();
   }
 
-  public ResponseEntity<Mesocycle> createMeso(NewMesocycleRequestBody newMesocycleRequestBody) {
-    Optional <User> optUser = userRepository.findById(newMesocycleRequestBody.getEmail());
+  public ResponseEntity<Mesocycle> createMeso(MesocycleCreationDeletion mesocycleCreationDeletion) {
+    Optional <User> optUser = userRepository.findById(mesocycleCreationDeletion.getEmail());
 
     if (!optUser.isPresent()){
-      throw new UserNotFoundException("id: " + newMesocycleRequestBody.getEmail());
+      throw new UserNotFoundException("id: " + mesocycleCreationDeletion.getEmail());
     }
 
     User user = optUser.get();
 
     List <Mesocycle> mesocycles = user.getMesocycles();
-    mesocycles.add(new Mesocycle(newMesocycleRequestBody.getMesoName()));
+    mesocycles.add(new Mesocycle(mesocycleCreationDeletion.getMesoName()));
 
     user.setMesocycles(mesocycles);
     User savedUser = userRepository.save(user);
@@ -75,5 +76,48 @@ public class UserService {
 
   public void deleteUserById(String id) {
     userRepository.deleteById(id);
+  }
+
+  public ResponseEntity<User> deleteUsersMesoById(MesocycleCreationDeletion mesocycleCreationDeletion) {
+    Optional <User> optUser = userRepository.findById(mesocycleCreationDeletion.getEmail());
+
+    if (!optUser.isPresent()){
+      throw new UserNotFoundException("id: " + mesocycleCreationDeletion.getEmail());
+    }
+
+    User user = optUser.get();
+
+    deleteMesoById(user.getMesocycles(), mesocycleCreationDeletion.getMesoName());
+    User savedUser = userRepository.save(user);
+
+    URI location = ServletUriComponentsBuilder
+        .fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(savedUser.getEmail())
+        .toUri();
+
+    return ResponseEntity.created(location).build();
+
+  }
+
+  public Mesocycle findMesoById(List<Mesocycle> mesocycles, String mesoName){
+    for (Mesocycle m:
+        mesocycles
+    ) {
+      if (m.getName().equals(mesoName)){
+        return m;
+      }
+    }
+    throw new MesocycleNotFoundException("id: " + mesoName);
+  }
+
+  public void deleteMesoById(List<Mesocycle> mesocycles, String mesoName){
+    for (int i = 0; i < mesocycles.size(); i++) {
+      if (mesocycles.get(i).getName().equals(mesoName)){
+        mesocycles.remove(i);
+        return;
+      }
+    }
+    throw new MesocycleNotFoundException("id: " + mesoName);
   }
 }

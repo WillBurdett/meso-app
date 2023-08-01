@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class NewMesocycleRequestBody {
+public class MesocycleCreationDeletion {
   @NotNull
   private String email;
   @NotNull

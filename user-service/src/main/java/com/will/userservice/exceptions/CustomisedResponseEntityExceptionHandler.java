@@ -21,7 +21,12 @@ public class CustomisedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<ErrorDetails> (errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(UserNotFoundException.class)
-    public final ResponseEntity<ErrorDetails>  exerciseInfoNotFoundException(Exception ex, WebRequest request) throws Exception {
+    public final ResponseEntity<ErrorDetails>  userNotFoundException(Exception ex, WebRequest request) throws Exception {
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<ErrorDetails> (errorDetails, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(MesocycleNotFoundException.class)
+    public final ResponseEntity<ErrorDetails>  mesocycleNotFoundException(Exception ex, WebRequest request) throws Exception {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<ErrorDetails> (errorDetails, HttpStatus.NOT_FOUND);
     }

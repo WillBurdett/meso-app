@@ -1,7 +1,7 @@
 package com.will.userservice.controllers;
 
 import com.will.userservice.models.Mesocycle;
-import com.will.userservice.models.NewMesocycleRequestBody;
+import com.will.userservice.models.MesocycleCreationDeletion;
 import com.will.userservice.models.User;
 import com.will.userservice.services.UserService;
 import java.util.List;
@@ -47,13 +47,18 @@ public class UserController {
     return userService.createUser(user);
   }
 
-  @PostMapping(path = "/create-meso")
-  public ResponseEntity<Mesocycle> createMeso(@RequestBody @Valid NewMesocycleRequestBody newMesocycleRequestBody){
-    return userService.createMeso(newMesocycleRequestBody);
+  @PostMapping(path = "/meso")
+  public ResponseEntity<Mesocycle> createMeso(@RequestBody @Valid MesocycleCreationDeletion mesocycleCreationDeletion){
+    return userService.createMeso(mesocycleCreationDeletion);
+  }
+
+  @DeleteMapping(path = "/meso")
+  public ResponseEntity<User> deleteUsersMesoById(@RequestBody MesocycleCreationDeletion mesocycleCreationDeletion){
+    return userService.deleteUsersMesoById(mesocycleCreationDeletion);
   }
 
   @GetMapping(path = "demo")
-  public NewMesocycleRequestBody getDemo(){
-    return new NewMesocycleRequestBody("bob@gmail.com", "My First Meso");
+  public MesocycleCreationDeletion getDemo(){
+    return new MesocycleCreationDeletion("bob@gmail.com", "My First Meso");
   }
 }
