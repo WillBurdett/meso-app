@@ -2,7 +2,9 @@ package com.will.userservice.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -14,9 +16,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
   @Id
-  @NotNull
+  @NotNull(message = "email must be present")
+  @Size(min = 4, message = "email must be at least 4 characters long")
   private String email;
-  @NotNull
+  @NotNull(message = "password must be present")
+  @Size(min = 4, message = "password must be at least 4 characters long")
   private String password;
   private List<Mesocycle> mesocycles;
 

@@ -43,12 +43,12 @@ public class UserController {
   }
 
   @PostMapping
-  public ResponseEntity<User> createUser(@RequestBody @Valid User user){
+  public ResponseEntity<User> createUser(@Valid @RequestBody User user){
     return userService.createUser(user);
   }
 
   @PostMapping(path = "/meso")
-  public ResponseEntity<Mesocycle> createMeso(@RequestBody @Valid MesocycleCreationDeletion mesocycleCreationDeletion){
+  public ResponseEntity<Mesocycle> createMeso(@Valid @RequestBody MesocycleCreationDeletion mesocycleCreationDeletion){
     return userService.createMeso(mesocycleCreationDeletion);
   }
 
