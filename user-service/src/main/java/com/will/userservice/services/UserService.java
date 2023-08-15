@@ -1,5 +1,6 @@
 package com.will.userservice.services;
 
+import com.will.userservice.exceptions.EmailAlreadyInUseException;
 import com.will.userservice.exceptions.MesocycleNotFoundException;
 import com.will.userservice.exceptions.UserNotFoundException;
 import com.will.userservice.models.Mesocycle;
@@ -39,6 +40,9 @@ public class UserService {
   }
 
   public ResponseEntity<User> createUser(User user) {
+    if (emailAlreadyInUse(user.getEmail())){
+      throw new EmailAlreadyInUseException("email address already in use: " + user.getEmail());
+    }
     User savedUser = userRepository.save(user);
 
     URI location = ServletUriComponentsBuilder
@@ -119,5 +123,10 @@ public class UserService {
       }
     }
     throw new MesocycleNotFoundException("id: " + mesoName);
+  }
+
+  private Boolean emailAlreadyInUse(String email){
+    Optional<User> user = userRepository.findById(email);
+    return user.isPresent();
   }
 }
