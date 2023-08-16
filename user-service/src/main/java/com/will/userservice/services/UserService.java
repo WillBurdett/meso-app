@@ -6,6 +6,9 @@ import com.will.userservice.exceptions.UserNotFoundException;
 import com.will.userservice.models.Mesocycle;
 import com.will.userservice.models.MesocycleCreationDeletion;
 import com.will.userservice.models.User;
+import com.will.userservice.models.Week;
+import com.will.userservice.models.Workout;
+import com.will.userservice.models.WorkoutSubmission;
 import com.will.userservice.repositories.UserRepository;
 import java.net.URI;
 import java.util.List;
@@ -76,6 +79,49 @@ public class UserService {
         .toUri();
 
     return ResponseEntity.created(location).build();
+  }
+
+
+  public ResponseEntity<Workout> addWorkoutToGivenWeekOfMeso(WorkoutSubmission workoutSubmission) {
+    Optional <User> optUser = userRepository.findById(workoutSubmission.getEmail());
+
+    if (!optUser.isPresent()){
+      throw new UserNotFoundException("id: " + workoutSubmission.getEmail());
+    }
+
+    User user = optUser.get();
+
+    Mesocycle meso = findMesoById(user.getMesocycles(), workoutSubmission.getMesoName());
+
+    Integer weekIndex = findWeekByWeekNum(meso, workoutSubmission.getWeekNum());
+
+
+    if (weekIndex != null){
+      meso.getWeeks().get(weekIndex).getAllWorkouts().add(workoutSubmission.getWorkout());
+    } else {
+      meso.getWeeks().add(new Week(workoutSubmission.getWeekNum(), List.of(workoutSubmission.getWorkout())));
+    }
+
+    User savedUser = userRepository.save(user);
+
+    URI location = ServletUriComponentsBuilder
+        .fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(savedUser.getEmail())
+        .toUri();
+
+    return ResponseEntity.created(location).build();
+
+
+  }
+
+  private Integer findWeekByWeekNum(Mesocycle meso, Integer weekNum) {
+    for (int i = 0; i < meso.getWeeks().size(); i++) {
+      if (meso.getWeeks().get(i).getWeekNumber() == weekNum){
+        return i;
+      }
+    }
+    return null;
   }
 
   public void deleteUserById(String id) {

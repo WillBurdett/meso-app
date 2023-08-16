@@ -1,8 +1,11 @@
 package com.will.userservice.controllers;
 
+import com.will.userservice.enums.Day;
 import com.will.userservice.models.Mesocycle;
 import com.will.userservice.models.MesocycleCreationDeletion;
 import com.will.userservice.models.User;
+import com.will.userservice.models.Workout;
+import com.will.userservice.models.WorkoutSubmission;
 import com.will.userservice.services.UserService;
 import java.util.List;
 import javax.validation.Valid;
@@ -47,9 +50,14 @@ public class UserController {
     return userService.createUser(user);
   }
 
-  @PostMapping(path = "/meso")
+  @PostMapping(path = "/meso/create")
   public ResponseEntity<Mesocycle> createMeso(@Valid @RequestBody MesocycleCreationDeletion mesocycleCreationDeletion){
     return userService.createMeso(mesocycleCreationDeletion);
+  }
+
+  @PostMapping(path = "/meso/add-workout")
+  public ResponseEntity<Workout> addWorkoutToGivenWeekOfMeso(@Valid @RequestBody WorkoutSubmission workoutSubmission){
+    return userService.addWorkoutToGivenWeekOfMeso(workoutSubmission);
   }
 
   @DeleteMapping(path = "/meso")
@@ -58,7 +66,11 @@ public class UserController {
   }
 
   @GetMapping(path = "demo")
-  public MesocycleCreationDeletion getDemo(){
-    return new MesocycleCreationDeletion("bob@gmail.com", "My First Meso");
+  public WorkoutSubmission getDemo(){
+    return new WorkoutSubmission(
+        "bob@gmail.com",
+        "My First Meso",
+        1,
+        new Workout(Day.MONDAY, "Chest day"));
   }
 }
