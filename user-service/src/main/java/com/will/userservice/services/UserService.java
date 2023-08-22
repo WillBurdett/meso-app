@@ -3,6 +3,8 @@ package com.will.userservice.services;
 import com.will.userservice.exceptions.EmailAlreadyInUseException;
 import com.will.userservice.exceptions.MesocycleNotFoundException;
 import com.will.userservice.exceptions.UserNotFoundException;
+import com.will.userservice.exceptions.WeekNumberAlreadyExistsException;
+import com.will.userservice.models.CreateWeekRequest;
 import com.will.userservice.models.Mesocycle;
 import com.will.userservice.models.MesocycleCreationDeletion;
 import com.will.userservice.models.User;
@@ -70,6 +72,40 @@ public class UserService {
     mesocycles.add(new Mesocycle(mesocycleCreationDeletion.getMesoName()));
 
     user.setMesocycles(mesocycles);
+    User savedUser = userRepository.save(user);
+
+    URI location = ServletUriComponentsBuilder
+        .fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(savedUser.getEmail())
+        .toUri();
+
+    return ResponseEntity.created(location).build();
+  }
+
+  public ResponseEntity<Week> createWeek(CreateWeekRequest createWeekRequest) {
+    Optional <User> optUser = userRepository.findById(createWeekRequest.getEmail());
+
+    if (!optUser.isPresent()){
+      throw new UserNotFoundException("id: " + createWeekRequest.getEmail());
+    }
+
+    User user = optUser.get();
+
+    Mesocycle meso = findMesoById(user.getMesocycles(), createWeekRequest.getMesoName());
+
+    Integer weekIndex = findWeekByWeekNum(meso, createWeekRequest.getWeekNum());
+
+
+    if (weekIndex != null){
+      throw new WeekNumberAlreadyExistsException(
+          "Week number: " + createWeekRequest.getWeekNum()
+              + ", already exists for user: " + createWeekRequest.getEmail()
+              + ", in mesocycle: " + createWeekRequest.getMesoName());
+    } else {
+      meso.getWeeks().add(new Week(createWeekRequest.getWeekNum()));
+    }
+
     User savedUser = userRepository.save(user);
 
     URI location = ServletUriComponentsBuilder

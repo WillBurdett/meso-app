@@ -1,9 +1,11 @@
 package com.will.userservice.controllers;
 
 import com.will.userservice.enums.Day;
+import com.will.userservice.models.CreateWeekRequest;
 import com.will.userservice.models.Mesocycle;
 import com.will.userservice.models.MesocycleCreationDeletion;
 import com.will.userservice.models.User;
+import com.will.userservice.models.Week;
 import com.will.userservice.models.Workout;
 import com.will.userservice.models.WorkoutSubmission;
 import com.will.userservice.services.UserService;
@@ -53,6 +55,11 @@ public class UserController {
   @PostMapping(path = "/meso/create")
   public ResponseEntity<Mesocycle> createMeso(@Valid @RequestBody MesocycleCreationDeletion mesocycleCreationDeletion){
     return userService.createMeso(mesocycleCreationDeletion);
+  }
+
+  @PostMapping(path = "/meso/create-week")
+  public ResponseEntity<Week> createWeek(@Valid @RequestBody CreateWeekRequest createWeekRequest){
+    return userService.createWeek(createWeekRequest);
   }
 
   @PostMapping(path = "/meso/add-workout")

@@ -20,4 +20,9 @@ public class Week {
     this.weekNumber = 0;
     this.allWorkouts = new ArrayList<>();
   }
+
+  public Week(Integer weekNumber) {
+    this.weekNumber = weekNumber;
+    this.allWorkouts = new ArrayList<>();
+  }
 }
