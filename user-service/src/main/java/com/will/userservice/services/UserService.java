@@ -3,6 +3,7 @@ package com.will.userservice.services;
 import com.will.userservice.exceptions.EmailAlreadyInUseException;
 import com.will.userservice.exceptions.MesocycleNotFoundException;
 import com.will.userservice.exceptions.UserNotFoundException;
+import com.will.userservice.exceptions.WeekDoesNotExistException;
 import com.will.userservice.exceptions.WeekNumberAlreadyExistsException;
 import com.will.userservice.models.CreateWeekRequest;
 import com.will.userservice.models.Mesocycle;
@@ -96,7 +97,6 @@ public class UserService {
 
     Integer weekIndex = findWeekByWeekNum(meso, createWeekRequest.getWeekNum());
 
-
     if (weekIndex != null){
       throw new WeekNumberAlreadyExistsException(
           "Week number: " + createWeekRequest.getWeekNum()
@@ -131,11 +131,12 @@ public class UserService {
 
     Integer weekIndex = findWeekByWeekNum(meso, workoutSubmission.getWeekNum());
 
-
     if (weekIndex != null){
       meso.getWeeks().get(weekIndex).getAllWorkouts().add(workoutSubmission.getWorkout());
     } else {
-      meso.getWeeks().add(new Week(workoutSubmission.getWeekNum(), List.of(workoutSubmission.getWorkout())));
+      throw new WeekDoesNotExistException(
+          "week number " + workoutSubmission.getWeekNum() +
+              " does not exist for mesocycle named: " + workoutSubmission.getMesoName());
     }
 
     User savedUser = userRepository.save(user);
@@ -147,8 +148,6 @@ public class UserService {
         .toUri();
 
     return ResponseEntity.created(location).build();
-
-
   }
 
   private Integer findWeekByWeekNum(Mesocycle meso, Integer weekNum) {
